@@ -1,28 +1,54 @@
-<section id="page-dashboard" class="page active">
-  <header class="page-header">
-    <h1>Dashboard</h1>
-    <p>Visao geral financeira do workspace atual.</p>
+<section id="page-dashboard" class="page active dashboard-module">
+  <header class="dashboard-head">
+    <div>
+      <h1>Dashboard</h1>
+      <p class="muted">Visao geral financeira do workspace atual</p>
+    </div>
+    <span class="month-badge" data-kpi="mes">Mes atual</span>
   </header>
 
-  <div class="dashboard-grid">
-    <article class="card">
-      <h3>Saldo Atual</h3>
-      <strong data-kpi="saldo">R$ 0,00</strong>
+  <div class="metric-cards">
+    <article class="card metric">
+      <h3>Saldo Total</h3>
+      <strong id="metric-saldo">R$ 0,00</strong>
     </article>
-
-    <article class="card">
-      <h3>Receitas no Mes</h3>
-      <strong data-kpi="receitas">R$ 0,00</strong>
+    <article class="card metric">
+      <h3>Receitas</h3>
+      <strong id="metric-receitas">R$ 0,00</strong>
     </article>
-
-    <article class="card">
-      <h3>Despesas no Mes</h3>
-      <strong data-kpi="despesas">R$ 0,00</strong>
+    <article class="card metric">
+      <h3>Despesas</h3>
+      <strong id="metric-despesas">R$ 0,00</strong>
+    </article>
+    <article class="card metric">
+      <h3>Investimentos</h3>
+      <strong id="metric-invest">R$ 0,00</strong>
     </article>
   </div>
 
-  <div class="card">
-    <h3>Resumo</h3>
-    <p data-kpi="resumo">Sem dados para o periodo selecionado.</p>
+  <div class="dashboard-grid">
+    <article class="card">
+      <div class="section-head">
+        <h3>IA Financeira</h3>
+        <button class="mini-btn" data-nav="ia">Abrir IA</button>
+      </div>
+      <div id="insights-ia"></div>
+    </article>
+
+    <article class="card">
+      <div class="section-head">
+        <h3>Ultimas Transacoes</h3>
+        <button class="mini-btn" data-nav="transacoes">Ver todas</button>
+      </div>
+      <div id="ultimas-transacoes"></div>
+    </article>
+
+    <article class="card">
+      <div class="section-head">
+        <h3>Metas Financeiras</h3>
+        <button class="mini-btn" data-nav="metas">Abrir Metas</button>
+      </div>
+      <div id="metas-dashboard"></div>
+    </article>
   </div>
 </section>
