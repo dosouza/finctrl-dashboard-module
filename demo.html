@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Module — Demo Local</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0b0f1a;
+      color: #e6ecff;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      padding: 24px;
+    }
+    #demo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #1e2535;
+    }
+    #demo-header h1 { font-size: 16px; color: #9fb0d1; font-weight: 500; }
+    #demo-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+    .demo-btn {
+      background: #141a27;
+      border: 1px solid #34415c;
+      color: #b9c5de;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .demo-btn:hover { background: #1c2438; }
+    .demo-btn.active { border-color: #3b82f6; color: #60a5fa; }
+    #demo-log {
+      margin-top: 14px;
+      background: #0a0e18;
+      border: 1px solid #1a2236;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 11px;
+      color: #4e6080;
+      min-height: 32px;
+    }
+    #demo-log span { color: #22c55e; }
+    #sandbox { margin-top: 0; }
+  </style>
+</head>
+<body>
+
+  <div id="demo-header">
+    <h1>🧪 finctrl-dashboard-module — Ambiente de Teste Local</h1>
+    <div id="demo-controls">
+      <button class="demo-btn active" onclick="loadDemo('normal')">Dados normais</button>
+      <button class="demo-btn" onclick="loadDemo('despesas_altas')">Despesas elevadas</button>
+      <button class="demo-btn" onclick="loadDemo('pendentes')">Com pendentes</button>
+      <button class="demo-btn" onclick="loadDemo('vazio')">Sem dados</button>
+      <button class="demo-btn" onclick="loadDemo('erro')">Simular erro API</button>
+    </div>
+  </div>
+
+  <div id="demo-log">Aguardando carregamento...</div>
+
+  <div id="sandbox"></div>
+
+  <script src="src/dashboard.module.js"></script>
+  <script>
+    // Conjuntos de dados de teste
+    var MOCK_DATA = {
+      normal: {
+        totais: {
+          saldo_inicial: 500,
+          receitas: 4200,
+          despesas: 2100,
+          investimentos: 800,
+          pendentes: 0
+        },
+        ultimas: [
+          { descricao: "Supermercado Extra", categoria_nome: "Alimentacao", valor: -189.90 },
+          { descricao: "Salario maio", categoria_nome: "Receita", valor: 4200.00 },
+          { descricao: "Netflix", categoria_nome: "Assinatura", valor: -55.90 },
+          { descricao: "Farmacia", categoria_nome: "Saude", valor: -42.00 },
+          { descricao: "Uber", categoria_nome: "Transporte", valor: -28.50 }
+        ],
+        historico: [],
+        categorias: []
+      },
+
+      despesas_altas: {
+        totais: {
+          saldo_inicial: 100,
+          receitas: 3000,
+          despesas: 2700,
+          investimentos: 0,
+          pendentes: 0
+        },
+        ultimas: [
+          { descricao: "Aluguel", categoria_nome: "Moradia", valor: -1500.00 },
+          { descricao: "Mercado", categoria_nome: "Alimentacao", valor: -620.00 },
+          { descricao: "Salario", categoria_nome: "Receita", valor: 3000.00 }
+        ],
+        historico: [],
+        categorias: []
+      },
+
+      pendentes: {
+        totais: {
+          saldo_inicial: 200,
+          receitas: 5000,
+          despesas: 1800,
+          investimentos: 500,
+          pendentes: 7
+        },
+        ultimas: [
+          { descricao: "Importacao OFX", categoria_nome: "Pendente", valor: -350.00 },
+          { descricao: "Importacao OFX", categoria_nome: "Pendente", valor: -120.00 }
+        ],
+        historico: [],
+        categorias: []
+      },
+
+      vazio: {
+        totais: {
+          saldo_inicial: 0,
+          receitas: 0,
+          despesas: 0,
+          investimentos: 0,
+          pendentes: 0
+        },
+        ultimas: [],
+        historico: [],
+        categorias: []
+      }
+    };
+
+    var currentScenario = "normal";
+
+    function log(msg, ok) {
+      var el = document.getElementById("demo-log");
+      el.innerHTML = ok === false
+        ? "❌ " + msg
+        : "<span>✔</span> " + msg;
+    }
+
+    async function loadDemo(scenario) {
+      currentScenario = scenario;
+
+      // Atualiza botao ativo
+      document.querySelectorAll(".demo-btn").forEach(function (btn) {
+        btn.classList.remove("active");
+        if (btn.getAttribute("onclick") === "loadDemo('" + scenario + "')") {
+          btn.classList.add("active");
+        }
+      });
+
+      var root = document.getElementById("sandbox");
+
+      try {
+        var view = await fetch("src/dashboard.view.html").then(function (r) {
+          if (!r.ok) throw new Error("view.html nao encontrado");
+          return r.text();
+        });
+
+        var styles = await fetch("src/dashboard.styles.css").then(function (r) {
+          if (!r.ok) throw new Error("styles.css nao encontrado");
+          return r.text();
+        });
+
+        function mockApi(endpoint) {
+          log("API chamada: " + endpoint);
+
+          if (scenario === "erro") {
+            return Promise.reject(new Error("Simulacao de falha na API"));
+          }
+
+          return Promise.resolve(MOCK_DATA[scenario] || MOCK_DATA.normal);
+        }
+
+        await window.DashboardModule.mount({
+          root: root,
+          templates: { view: view, styles: styles },
+          month: new Date().toISOString().slice(0, 7),
+          api: mockApi,
+          onNavigate: function (pageId) {
+            log("onNavigate disparado → pagina: " + pageId);
+          }
+        });
+
+        log("Modulo montado com sucesso — cenario: " + scenario);
+
+      } catch (err) {
+        log(err.message, false);
+        root.innerHTML = '<div style="color:#ef4444;padding:20px;font-size:13px;">Erro: ' + err.message + '</div>';
+      }
+    }
+
+    // Carrega cenario inicial
+    loadDemo("normal");
+  </script>
+</body>
+</html>
