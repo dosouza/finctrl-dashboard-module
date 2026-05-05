@@ -4,16 +4,23 @@ Modulo externo do Dashboard do FinCtrl, desacoplado para ser desenvolvido por eq
 
 ## Versao atual
 
-- 0.1.1
+- 0.1.2
 
 ## Estrutura
 
-- manifest.json: metadados e item de menu do modulo
-- dashboard.module.js: controlador principal
-- dashboard.view.html: template da pagina
-- dashboard.styles.css: estilos locais do modulo
-- version.json: controle de versao semantica do modulo
-- ONBOARDING_ESTAGIARIO.md: roteiro pratico de estudo e execucao
+```
+finctrl-dashboard-module/
+├── docs/
+│   ├── onboarding_develop.md      # Guia para devs iniciantes
+│   └── PROJECT.md                 # Guia para desenvolvimento com IA
+├── src/
+│   ├── dashboard.module.js        # Controlador principal
+│   ├── dashboard.view.html        # Template da pagina
+│   └── dashboard.styles.css       # Estilos locais
+├── manifest.json                  # Metadados e nav item do modulo
+├── version.json                   # Controle de versao semantica
+└── README.md                      # Este arquivo
+```
 
 ## Contrato do host
 
@@ -41,12 +48,12 @@ Ele aceita retorno em dois formatos:
 
 ```html
 <div id="sandbox"></div>
-<script src="dashboard.module.js"></script>
+<script src="src/dashboard.module.js"></script>
 <script>
   (async function () {
     const root = document.getElementById("sandbox");
-    const view = await fetch("dashboard.view.html").then(function (r) { return r.text(); });
-    const styles = await fetch("dashboard.styles.css").then(function (r) { return r.text(); });
+    const view = await fetch("src/dashboard.view.html").then(function (r) { return r.text(); });
+    const styles = await fetch("src/dashboard.styles.css").then(function (r) { return r.text(); });
 
     function api(endpoint) {
       return fetch(endpoint, { credentials: "include" }).then(function (res) {
@@ -74,3 +81,9 @@ Ele aceita retorno em dois formatos:
 
 - 0.1.2: adicionar suporte opcional a graficos quando Chart.js estiver disponivel no host
 - 0.1.3: adapter oficial para FinCtrl Core
+
+## Documentacao Adicional
+
+- [docs/onboarding_develop.md](docs/onboarding_develop.md) - Guia pratico para devs iniciantes
+- [docs/PROJECT.md](docs/PROJECT.md) - Arquitetura e como usar IA para desenvolvimento
+

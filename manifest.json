@@ -1,10 +1,10 @@
 {
   "id": "dashboard",
   "nome": "Dashboard",
-  "versao": "0.1.1",
+  "versao": "0.1.2",
   "tipo": "feature",
   "descricao": "Modulo isolado do Dashboard do FinCtrl para testes em repositorio independente.",
-  "entry": "dashboard.module.js",
+  "entry": "src/dashboard.module.js",
   "nav_items": [
     {
       "id": "dashboard",

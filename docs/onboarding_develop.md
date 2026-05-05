@@ -1,4 +1,4 @@
-# Onboarding do Estagiario - Dashboard Module
+# Onboarding do Desenvolvedor - Dashboard Module
 
 ## Objetivo
 
@@ -13,10 +13,11 @@ Entender como um modulo externo conversa com o host FinCtrl sem acoplamento dire
 ## Ordem de leitura sugerida
 
 1. manifest.json
-2. dashboard.view.html
-3. dashboard.styles.css
-4. dashboard.module.js
+2. src/dashboard.view.html
+3. src/dashboard.styles.css
+4. src/dashboard.module.js
 5. README.md
+6. docs/PROJECT.md
 
 ## Fluxo de execucao
 
@@ -31,6 +32,16 @@ Entender como um modulo externo conversa com o host FinCtrl sem acoplamento dire
 ## Tarefa pratica 1
 
 Adicionar no card de metrica um campo de variacao percentual mensal.
+
+**Como fazer com IA:**
+```
+Prompt: Estou em um modulo JavaScript isolado chamado DashboardModule. Quero adicionar um campo de variacao percentual mensaldos KPIs saldo/receitas/despesas. O modulo faz render em HTML via renderMetrics(). Faz um enhancement que:
+1. Busque dados do mes anterior na API
+2. Calcule a variacao em porcentagem
+3. Atualize a view com <span class="delta">+5%</span> ou <span class="delta">-3%</span>
+
+Onde devo fazer as alteracoes no codigo?
+```
 
 ## Tarefa pratica 2
 
