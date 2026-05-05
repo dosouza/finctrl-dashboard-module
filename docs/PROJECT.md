@@ -168,14 +168,78 @@ Por compatibilidade ES5:
 - Temas customizaveis via CSS variables
 - Suporte a i18n (multiplos idiomas)
 
+## Regra de Versionamento
+
+Todo commit deve atualizar `version.json` e `manifest.json` antes de ser feito.
+
+### Formato
+
+```
+vX.Y.Z - tipo: descricao curta
+```
+
+Exemplos:
+- `v0.1.3 - feat: adicionar grafico de tendencia`
+- `v0.1.4 - fix: corrigir calculo de saldo negativo`
+- `v0.1.5 - refactor: separar render em metodos menores`
+
+### Tipos validos
+
+- `feat` — nova funcionalidade
+- `fix` — correcao de bug
+- `refactor` — reestruturacao sem mudar comportamento
+- `docs` — apenas documentacao
+- `chore` — atualizacao de configs, dependencias, etc
+
+### Regra de rollover (obrigatoria)
+
+Cada segmento aceita valores de **0 a 10**. Ao tentar ir para 11, deve-se zerar o segmento e incrementar o superior.
+
+```
+Patch primeiro (fluxo normal):
+  v0.1.0 → v0.1.1 → v0.1.2 → ... → v0.1.10 → v0.2.0
+
+Rollover do patch:
+  v0.1.10 → v0.2.0   (nao v0.1.11)
+
+Rollover do minor:
+  v0.10.10 → v1.0.0  (nao v0.11.0)
+```
+
+### Passo a passo antes de commitar
+
+1. Atualize `version.json`:
+```json
+{ "version": "0.1.3" }
+```
+
+2. Atualize `manifest.json`:
+```json
+{ "versao": "0.1.3" }
+```
+
+3. Commit com mensagem versionada:
+```bash
+git commit -m "v0.1.3 - feat: descricao do que foi feito"
+```
+
+### Prompt para IA calcular versao
+
+```
+A versao atual e vX.Y.Z. Fiz uma alteracao do tipo [feat/fix/refactor].
+Qual a proxima versao seguindo a regra de rollover onde cada segmento
+aceita 0 a 10, e patch sobe primeiro?
+```
+
 ## Como Contribuir
 
 1. **Fork este repositorio**
 2. **Crie branch**: git checkout -b feature/seu-feature
 3. **Edite src/** mantenha manifest.json atualizado
 4. **Teste integracoes** rodando exemplo local
-5. **Commit versionado**: git commit -m "v0.1.x - feat: descricao"
-6. **Submeta PR** com descricao clara
+5. **Atualize version.json e manifest.json** com nova versao
+6. **Commit versionado**: git commit -m "vX.Y.Z - feat: descricao"
+7. **Submeta PR** com descricao clara
 
 ## Testing Checklist
 
