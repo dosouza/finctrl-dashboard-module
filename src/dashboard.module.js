@@ -42,12 +42,28 @@
     bindActions(ctx) {
       const navButtons = ctx.root.querySelectorAll("[data-nav]");
       navButtons.forEach(function (btn) {
-        btn.addEventListener("click", function () {
+        const handler = function () {
           if (typeof ctx.onNavigate === "function") {
             ctx.onNavigate(btn.getAttribute("data-nav"));
           }
-        });
+        };
+        btn._dashboardHandler = handler;
+        btn.addEventListener("click", handler);
       });
+    },
+
+    unmount(root) {
+      const navButtons = root.querySelectorAll("[data-nav]");
+      navButtons.forEach(function (btn) {
+        if (btn._dashboardHandler) {
+          btn.removeEventListener("click", btn._dashboardHandler);
+          delete btn._dashboardHandler;
+        }
+      });
+      const style = document.getElementById("dashboard-module-styles");
+      if (style) {
+        style.remove();
+      }
     },
 
     ensureStyles(ctx) {
