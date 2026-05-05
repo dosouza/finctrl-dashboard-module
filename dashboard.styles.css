@@ -1,0 +1,30 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.card {
+  background: #141a27;
+  border: 1px solid #283042;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 13px;
+  color: #8fa0c4;
+}
+
+.card strong {
+  font-size: 22px;
+  color: #e6ecff;
+}
+
+@media (max-width: 880px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
