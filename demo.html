@@ -3,67 +3,249 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Module — Demo Local</title>
+  <title>finctrl Dashboard Module - Demo</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: #0b0f1a;
-      color: #e6ecff;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      padding: 24px;
+    :root {
+      --bg: #0f1117;
+      --surface: #161922;
+      --surface2: #1e2535;
+      --border: #1e2230;
+      --border2: #2d3748;
+      --primary: #10b981;
+      --primary-10: rgba(16, 185, 129, .10);
+      --fg: #e2e5ea;
+      --muted: #64748b;
+      --expense: #e05263;
+      --sidebar-w: 250px;
+      --radius: 8px;
+      --radius-lg: 12px;
+      --font-main: "Inter", "Segoe UI", sans-serif;
+      --font-head: "Space Grotesk", "Segoe UI", sans-serif;
     }
-    #demo-header {
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-main);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      background: #0a0c10;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-logo {
+      padding: 24px 20px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .brand {
+      font-family: var(--font-head);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .brand span { color: var(--primary); }
+
+    .tagline {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 12px 10px;
+    }
+
+    .nav-item {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
-      padding-bottom: 14px;
-      border-bottom: 1px solid #1e2535;
+      gap: 10px;
+      width: 100%;
+      border: none;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--muted);
+      padding: 9px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      margin-bottom: 2px;
+      text-align: left;
     }
-    #demo-header h1 { font-size: 16px; color: #9fb0d1; font-weight: 500; }
-    #demo-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .nav-item.active {
+      background: var(--primary-10);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .main {
+      margin-left: var(--sidebar-w);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+
+    .topbar-title h1 {
+      font-family: var(--font-head);
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .topbar-title p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .demo-controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .demo-btn {
-      background: #141a27;
-      border: 1px solid #34415c;
-      color: #b9c5de;
-      border-radius: 8px;
-      padding: 7px 12px;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      color: var(--fg);
+      border-radius: var(--radius);
+      padding: 8px 10px;
       font-size: 12px;
       cursor: pointer;
     }
-    .demo-btn:hover { background: #1c2438; }
-    .demo-btn.active { border-color: #3b82f6; color: #60a5fa; }
-    #demo-log {
-      margin-top: 14px;
-      background: #0a0e18;
-      border: 1px solid #1a2236;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 11px;
-      color: #4e6080;
-      min-height: 32px;
+
+    .demo-btn:hover { background: var(--surface2); }
+
+    .demo-btn.active {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-10);
     }
-    #demo-log span { color: #22c55e; }
-    #sandbox { margin-top: 0; }
+
+    .content {
+      padding: 20px 24px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .demo-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+    }
+
+    .demo-card h2 {
+      font-family: var(--font-head);
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .demo-card p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    #sandbox {
+      min-height: 340px;
+    }
+
+    #demo-log {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      min-height: 22px;
+    }
+
+    #demo-log .ok { color: var(--primary); }
+    #demo-log .err { color: var(--expense); }
+
+    @media (max-width: 980px) {
+      .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
 <body>
-
-  <div id="demo-header">
-    <h1>🧪 finctrl-dashboard-module — Ambiente de Teste Local</h1>
-    <div id="demo-controls">
-      <button class="demo-btn active" onclick="loadDemo('normal')">Dados normais</button>
-      <button class="demo-btn" onclick="loadDemo('despesas_altas')">Despesas elevadas</button>
-      <button class="demo-btn" onclick="loadDemo('pendentes')">Com pendentes</button>
-      <button class="demo-btn" onclick="loadDemo('vazio')">Sem dados</button>
-      <button class="demo-btn" onclick="loadDemo('erro')">Simular erro API</button>
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">fin<span>ctrl</span></div>
+      <div class="tagline">Gestao financeira pessoal</div>
     </div>
-  </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" type="button">Dashboard</button>
+      <button class="nav-item" type="button">Transacoes</button>
+      <button class="nav-item" type="button">IA Financeira</button>
+      <button class="nav-item" type="button">Metas</button>
+      <button class="nav-item" type="button">Configuracoes</button>
+    </nav>
+  </aside>
 
-  <div id="demo-log">Aguardando carregamento...</div>
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-title">
+        <h1>Dashboard</h1>
+        <p>Ambiente de teste visual para o modulo externo</p>
+      </div>
+      <div class="demo-controls">
+        <button class="demo-btn active" data-scenario="normal" type="button">Dados normais</button>
+        <button class="demo-btn" data-scenario="despesas_altas" type="button">Despesas elevadas</button>
+        <button class="demo-btn" data-scenario="pendentes" type="button">Com pendentes</button>
+        <button class="demo-btn" data-scenario="vazio" type="button">Sem dados</button>
+        <button class="demo-btn" data-scenario="erro" type="button">Simular erro API</button>
+      </div>
+    </header>
 
-  <div id="sandbox"></div>
+    <section class="content">
+      <article class="demo-card">
+        <h2>Preview do Modulo</h2>
+        <p>Este bloco simula a area de conteudo do FinCtrl. A designer pode validar layout, hierarquia visual e espaçamentos no contexto real do produto.</p>
+      </article>
+
+      <article id="sandbox" class="demo-card"></article>
+
+      <article class="demo-card">
+        <h2>Log de Integracao</h2>
+        <div id="demo-log">Aguardando carregamento...</div>
+      </article>
+    </section>
+  </main>
 
   <script src="src/dashboard.module.js"></script>
   <script>
@@ -140,19 +322,15 @@
     function log(msg, ok) {
       var el = document.getElementById("demo-log");
       el.innerHTML = ok === false
-        ? "❌ " + msg
-        : "<span>✔</span> " + msg;
+        ? '<span class="err">Erro:</span> ' + msg
+        : '<span class="ok">OK:</span> ' + msg;
     }
 
     async function loadDemo(scenario) {
       currentScenario = scenario;
 
-      // Atualiza botao ativo
       document.querySelectorAll(".demo-btn").forEach(function (btn) {
-        btn.classList.remove("active");
-        if (btn.getAttribute("onclick") === "loadDemo('" + scenario + "')") {
-          btn.classList.add("active");
-        }
+        btn.classList.toggle("active", btn.getAttribute("data-scenario") === scenario);
       });
 
       var root = document.getElementById("sandbox");
@@ -184,11 +362,11 @@
           month: new Date().toISOString().slice(0, 7),
           api: mockApi,
           onNavigate: function (pageId) {
-            log("onNavigate disparado → pagina: " + pageId);
+            log("onNavigate disparado para pagina: " + pageId);
           }
         });
 
-        log("Modulo montado com sucesso — cenario: " + scenario);
+        log("Modulo montado com sucesso no cenario: " + scenario);
 
       } catch (err) {
         log(err.message, false);
@@ -196,7 +374,12 @@
       }
     }
 
-    // Carrega cenario inicial
+    document.querySelectorAll(".demo-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        loadDemo(btn.getAttribute("data-scenario"));
+      });
+    });
+
     loadDemo("normal");
   </script>
 </body>

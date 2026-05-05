@@ -4,7 +4,7 @@ Modulo externo do Dashboard do FinCtrl, desacoplado para ser desenvolvido por eq
 
 ## Versao atual
 
-- 0.1.2
+- 0.1.5
 
 ## Estrutura
 
